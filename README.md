@@ -6,4 +6,4 @@ Download and save in `data/`
 
 - [Large Movie Review Dataset](https://ai.stanford.edu/~amaas/data/sentiment/)  
 
-- [5000 Movie Reviews in firebase](https://project-movie-reviews.firebaseio.com/)
+- [TMDB 5000 Movie Reviews in firebase](https://project-movie-reviews.firebaseio.com/)
