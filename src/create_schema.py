@@ -28,7 +28,6 @@ TABLES['genres_in_movies'] = (
     "CREATE TABLE `genres_in_movies` ("
     "  `genres_id` int(11) NOT NULL ,"
     "  `movie_id` int(11) NOT NULL,"
-    "  PRIMARY KEY (`genres_id`, `movie_id`),"
     "  FOREIGN KEY (`genres_id`) REFERENCES `genres` (`id`),"
     "  FOREIGN KEY (`movie_id`) REFERENCES `movies` (`id`)"
     ") ENGINE=InnoDB")
@@ -40,34 +39,22 @@ TABLES['people'] = (
     "  PRIMARY KEY (`id`)"
     ") ENGINE=InnoDB")
 
-TABLES['people_in_movies'] = (
-    "CREATE TABLE `people_in_movies` ("
-    "  `person_id` int(11) NOT NULL,"
-    "  `movie_id` int(11) NOT NULL,"
-    "  PRIMARY KEY (`person_id`, `movie_id`),"
-    "  FOREIGN KEY (`person_id`) REFERENCES `people` (`id`),"
-    "  FOREIGN KEY (`movie_id`) REFERENCES `movies` (`id`)"
-    ") ENGINE=InnoDB")
 
-TABLES['cast'] = (
-    "CREATE TABLE `cast` ("
-    "  `cast_id` int(11) NOT NULL ,"
-    "  `movie_id` int(11) NOT NULL,"
-    "  `character` varchar(50) NOT NULL,"
+TABLES['cast_in_movies'] = (
+    "CREATE TABLE `cast_in_movies` ("
     "  `person_id` int(11) NOT NULL ,"
-    "  PRIMARY KEY (`cast_id`, `movie_id`),"
+    "  `movie_id` int(11) NOT NULL,"
+    "  `role` varchar(300) NOT NULL,"
     "  FOREIGN KEY (`person_id`) REFERENCES `people` (`id`),"
     "  FOREIGN KEY (`movie_id`) REFERENCES `movies` (`id`)"
     ") ENGINE=InnoDB")
 
-TABLES['crew'] = (
-    "CREATE TABLE `crew` ("
-    "  `crew_id` int(11) NOT NULL AUTO_INCREMENT,"
+TABLES['crew_in_movies'] = (
+    "CREATE TABLE `crew_in_movies` ("
+    "  `person_id` int(11) NOT NULL ,"
     "  `movie_id` int(11) NOT NULL,"
     "  `department` varchar(50) NOT NULL,"
-    "  `job` varchar(50) NOT NULL ,"
-    "  `person_id` int(11) NOT NULL ,"
-    "  PRIMARY KEY (`crew_id`, `movie_id`),"
+    "  `job` varchar(100) NOT NULL ,"
     "  FOREIGN KEY (`person_id`) REFERENCES `people` (`id`),"
     "  FOREIGN KEY (`movie_id`) REFERENCES `movies` (`id`)"
     ") ENGINE=InnoDB")
@@ -83,7 +70,6 @@ TABLES['keywords_in_movies'] = (
     "CREATE TABLE `keywords_in_movies` ("
     "  `key_id` int(11) NOT NULL ,"
     "  `movie_id` int(11) NOT NULL,"
-    "  PRIMARY KEY (`key_id`, `movie_id`),"
     "  FOREIGN KEY (`key_id`) REFERENCES `keywords` (`id`),"
     "  FOREIGN KEY (`movie_id`) REFERENCES `movies` (`id`)"
     ") ENGINE=InnoDB")

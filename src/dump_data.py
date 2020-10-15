@@ -41,22 +41,23 @@ def extract_movies_info(credits_path, movies_path):
 def extract_people_info(credits_path):
     print("Extracting people infomation: ", end=' ', flush=True)
     cred = pd.read_csv(credits_path)
-    people_dic = defaultdict(dict)
+    cast_dic = defaultdict(dict)
+    crew_dic = defaultdict(dict)
     for _, row in cred.iterrows():
         cast_list = eval(row.cast)
         crew_list = eval(row.crew)
         for cast in cast_list:
-            people_dic[cast['id']]['name'] = cast['name']
-            people_dic[cast['id']].setdefault(
-                'movies', set()).add(row.movie_id)
+            cast_dic[cast['id']]['name'] = cast['name']
+            cast_dic[cast['id']].setdefault('movies', set()).add(
+                (row.movie_id, cast['character']))
         for crew in crew_list:
-            people_dic[crew['id']]['name'] = crew['name']
+            crew_dic[crew['id']]['name'] = crew['name']
             # Person may have several jobs
-            people_dic[crew['id']].setdefault(
-                'movies', set()).add(row.movie_id)
+            crew_dic[crew['id']].setdefault('movies', set()).add(
+                (row.movie_id, crew['department'], crew['job']))
 
     print("OK")
-    return people_dic
+    return cast_dic, crew_dic
 
 
 def dump_movies(movies):
@@ -166,16 +167,19 @@ def dump_keywords_in_movies(movies):
     cnx.close()
 
 
-def dump_people(people):
+def dump_people(cast, crew):
     try:
         print("Dumping people: ", end=' ', flush=True)
         cnx = mysql.connector.connect(user='root', database='tmdb')
         cursor = cnx.cursor()
-        add_keyword_in_movies = ("INSERT INTO people "
-                                 "(id, name) "
-                                 "VALUES (%s, %s)")
-        for i in people:
-            cursor.execute(add_keyword_in_movies, (i, people[i]['name']))
+        add_person = ("INSERT INTO people "
+                      "(id, name) "
+                      "VALUES (%s, %s)")
+        for i in cast:
+            cursor.execute(add_person, (i, cast[i]['name']))
+        for i in crew:
+            if i not in cast:  # some people are in both cast and crew
+                cursor.execute(add_person, (i, crew[i]['name']))
     except mysql.connector.Error as err:
         print(err.msg)
     else:
@@ -186,17 +190,23 @@ def dump_people(people):
     cnx.close()
 
 
-def dump_people_in_movies(people):
+def dump_people_in_movies(cast, crew):
     try:
         print("Dumping people in movies: ", end=' ', flush=True)
         cnx = mysql.connector.connect(user='root', database='tmdb')
         cursor = cnx.cursor()
-        add_keyword_in_movies = ("INSERT INTO people_in_movies "
-                                 "(person_id, movie_id) "
-                                 "VALUES (%s, %s)")
-        for i in people:
-            for movie_id in people[i]['movies']:
-                cursor.execute(add_keyword_in_movies, (i, movie_id))
+        add_cast_in_movies = ("INSERT INTO cast_in_movies "
+                              "(person_id, movie_id, role) "
+                              "VALUES (%s, %s, %s)")
+        add_crew_in_movies = ("INSERT INTO crew_in_movies "
+                              "(person_id, movie_id, department, job) "
+                              "VALUES (%s, %s, %s, %s)")
+        for i in cast:
+            for movie_id, character in cast[i]['movies']:
+                cursor.execute(add_cast_in_movies, (i, movie_id, character))
+        for i in crew:
+            for movie_id, depart, job in crew[i]['movies']:
+                cursor.execute(add_crew_in_movies, (i, movie_id, depart, job))
     except mysql.connector.Error as err:
         print(err.msg)
     else:
@@ -212,11 +222,12 @@ if __name__ == "__main__":
     movies_path = "data/TMDB/tmdb_5000_movies.csv"
     movies, genres, keywords, movie_relation = extract_movies_info(
         credits_path, movies_path)
-    people = extract_people_info(credits_path)
+    cast, crew = extract_people_info(credits_path)
     dump_movies(movies)
     dump_genres(genres)
     dump_genres_in_movies(movie_relation)
-    dump_people(people)
-    dump_people_in_movies(people)
+    dump_people(cast, crew)
+    dump_people_in_movies(cast, crew)
+    # # Takes too long to finish:
     # dump_keywords(keywords)
     # dump_keywords_in_movies(movie_relation)
