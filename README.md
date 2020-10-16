@@ -9,4 +9,12 @@ Download and save in `data/`
 
 ## Database:
 - MySQL 8.0.21  
-Using root user with no password. Please change the setting base on your preference. 
+- Dump Data  
+Using root user with no password. Please change the setting base on your preference.  
+  - Start your mysql server:  
+    - For mac user:  
+      `brew services start mysql`
+  - Create Schema:  
+    `python create_schema.py`
+  - Dump data:  
+    `python dump_data.py`
