@@ -2,6 +2,9 @@ import pandas as pd
 import mysql.connector
 from collections import defaultdict
 
+USER = 'root'
+PASSWORD = ''
+
 
 def extract_movies_info(credits_path, movies_path):
     print("Extracting movie infomation: ", end=' ', flush=True)
@@ -63,7 +66,8 @@ def extract_people_info(credits_path):
 def dump_movies(movies):
     try:
         print("Dumping movie : ", end=' ')
-        cnx = mysql.connector.connect(user='root', database='tmdb')
+        cnx = mysql.connector.connect(
+            user=USER, password=PASSWORD, database='tmdb')
         cursor = cnx.cursor()
         add_movie = ("INSERT INTO movies "
                      "(id, title, original_title, budget, homepage, "
@@ -86,7 +90,8 @@ def dump_movies(movies):
 def dump_genres(genres):
     try:
         print("Dumping generes: ", end=' ')
-        cnx = mysql.connector.connect(user='root', database='tmdb')
+        cnx = mysql.connector.connect(
+            user=USER, password=PASSWORD, database='tmdb')
         cursor = cnx.cursor()
         add_genre = ("INSERT INTO genres "
                      "(id, name) "
@@ -106,7 +111,8 @@ def dump_genres(genres):
 def dump_keywords(keywords):
     try:
         print("Dumping keywords: ", end=' ')
-        cnx = mysql.connector.connect(user='root', database='tmdb')
+        cnx = mysql.connector.connect(
+            user=USER, password=PASSWORD, database='tmdb')
         cursor = cnx.cursor()
 
         add_keyword = ("INSERT INTO keywords "
@@ -128,7 +134,8 @@ def dump_keywords(keywords):
 def dump_genres_in_movies(movies):
     try:
         print("Dumping generes relationship: ", end=' ')
-        cnx = mysql.connector.connect(user='root', database='tmdb')
+        cnx = mysql.connector.connect(
+            user=USER, password=PASSWORD, database='tmdb')
         cursor = cnx.cursor()
         add_genre_in_movies = ("INSERT INTO genres_in_movies "
                                "(genres_id, movie_id) "
@@ -149,7 +156,8 @@ def dump_genres_in_movies(movies):
 def dump_keywords_in_movies(movies):
     try:
         print("Dumping keywords relationship: ", end=' ', flush=True)
-        cnx = mysql.connector.connect(user='root', database='tmdb')
+        cnx = mysql.connector.connect(
+            user=USER, password=PASSWORD, database='tmdb')
         cursor = cnx.cursor()
         add_keyword_in_movies = ("INSERT INTO keywords_in_movies "
                                  "(key_id, movie_id) "
@@ -170,7 +178,8 @@ def dump_keywords_in_movies(movies):
 def dump_people(cast, crew):
     try:
         print("Dumping people: ", end=' ', flush=True)
-        cnx = mysql.connector.connect(user='root', database='tmdb')
+        cnx = mysql.connector.connect(
+            user=USER, password=PASSWORD, database='tmdb')
         cursor = cnx.cursor()
         add_person = ("INSERT INTO people "
                       "(id, name) "
@@ -193,7 +202,8 @@ def dump_people(cast, crew):
 def dump_people_in_movies(cast, crew):
     try:
         print("Dumping people in movies: ", end=' ', flush=True)
-        cnx = mysql.connector.connect(user='root', database='tmdb')
+        cnx = mysql.connector.connect(
+            user=USER, password=PASSWORD, database='tmdb')
         cursor = cnx.cursor()
         add_cast_in_movies = ("INSERT INTO cast_in_movies "
                               "(person_id, movie_id, role) "

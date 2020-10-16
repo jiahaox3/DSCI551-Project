@@ -2,6 +2,8 @@ import mysql.connector
 from mysql.connector import errorcode
 
 DB_NAME = 'tmdb'
+USER = 'root'
+PASSWORD = ''
 
 TABLES = {}
 TABLES['movies'] = (
@@ -86,7 +88,7 @@ def create_database(cursor):
 
 
 cnx = mysql.connector.connect(
-    user='root', password='', host='localhost')
+    user=USER, password=PASSWORD, host='localhost')
 # creating database_cursor to perform SQL operation
 cursor = cnx.cursor()
 
