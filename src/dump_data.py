@@ -236,12 +236,12 @@ if __name__ == "__main__":
     movies_path = "data/TMDB/tmdb_5000_movies.csv"
     movies, genres, keywords, movie_relation = extract_movies_info(
         credits_path, movies_path)
-    # cast, crew = extract_people_info(credits_path)
-    # dump_movies(movies)
-    # dump_genres(genres)
+    cast, crew = extract_people_info(credits_path)
+    dump_movies(movies)
+    dump_genres(genres)
     dump_genres_in_movies(movie_relation)
-    # dump_people(cast, crew)
-    # dump_people_in_movies(cast, crew)
+    dump_people(cast, crew)
+    dump_people_in_movies(cast, crew)
     # # Takes too long to finish:
     # dump_keywords(keywords)
     # dump_keywords_in_movies(movie_relation)
