@@ -28,14 +28,18 @@ def extract_movies_info(credits_path, movies_path):
         movie_dic[row.id]['popularity'] = row.popularity
 
         raw_genre = eval(row.genres)
+        genre_ids = []
         for genre in raw_genre:
+            genre_ids.append(genre['id'])
             genre_dic[genre['id']] = genre['name']
-        movie_relation[row.id]['genres'] = genre_dic.keys()
+        movie_relation[row.id]['genres'] = genre_ids
 
         keywords = eval(row.keywords)
+        keywords_ids = []
         for keyword in keywords:
+            keywords_ids.append(keyword['id'])
             keyword_dic[keyword['id']] = keyword['name']
-        movie_relation[row.id]['keywords'] = keyword_dic.keys()
+        movie_relation[row.id]['keywords'] = keywords_ids
 
     print("OK")
     return movie_dic, genre_dic, keyword_dic, movie_relation
@@ -232,12 +236,12 @@ if __name__ == "__main__":
     movies_path = "data/TMDB/tmdb_5000_movies.csv"
     movies, genres, keywords, movie_relation = extract_movies_info(
         credits_path, movies_path)
-    cast, crew = extract_people_info(credits_path)
-    dump_movies(movies)
-    dump_genres(genres)
+    # cast, crew = extract_people_info(credits_path)
+    # dump_movies(movies)
+    # dump_genres(genres)
     dump_genres_in_movies(movie_relation)
-    dump_people(cast, crew)
-    dump_people_in_movies(cast, crew)
+    # dump_people(cast, crew)
+    # dump_people_in_movies(cast, crew)
     # # Takes too long to finish:
     # dump_keywords(keywords)
     # dump_keywords_in_movies(movie_relation)
