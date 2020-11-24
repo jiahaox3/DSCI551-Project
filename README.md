@@ -25,7 +25,8 @@ Download and save in `data/`
 Django 3.1.3
 - Go through the tutorial https://docs.djangoproject.com/en/3.1/intro/  
 - Creating models (from MySQL server)  
-  `python manage.py inspectdb > dsci551/models.py`
+  `python manage.py inspectdb > dsci551/models.py`  
+  The model is not polished.
 - Run Webserver  
   `cd web`  
   `python manage.py runserver`  
