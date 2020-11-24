@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_content %}
+
+<br>
+<form action="" method="post">
+    {% csrf_token %}
+    <select name=genre_selection>
+        <option value="Select Genre">Select Genre</option>
+        {% for genre in genre_list %}
+            {%  if genre.id == genre_selected %}
+                <option value={{ genre.id }} selected="selected">{{ genre.name }}</option>
+            {% else %}
+                <option value={{ genre.id }}>{{ genre.name }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+    <input type="submit" name="btnsubmit" value="Submit" />
+</form>
+
+<div class="row pre-scrollable">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Movie Name</th>
+                <th scope="col">Director</th>
+                <th scope="col">Budget(Million)</th>
+                <th scope="col">Popularity</th>
+            </tr>
+        </thead>
+        {% for movie, pop, budget, director in movie_info %}
+            <thead>
+                <tr>
+                    <td scope="col">{{movie}}</td>
+                    <td scope="col">{{director}}</td>
+                    <td scope="col">{%  widthratio budget 1000000 1 %}</td>
+                    <td scope="col">{{pop}}</td>
+                </tr>
+            </thead>    
+        {% endfor %}
+    </table>
+</div>
+
+
+
+{% endblock %}
